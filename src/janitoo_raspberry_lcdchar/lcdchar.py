@@ -41,10 +41,10 @@ from janitoo_raspberry_i2c.bus_i2c import I2CBus
 
 
 try:
-    import Adafruit_CharLCD as LCD
+    from Adafruit_CharLCD import Adafruit_CharLCD
 except RuntimeError:
 
-    class LCD():
+    class Adafruit_CharLCD():
         """ Fake class to allow buil on Continuous Integration tools.
         """
         def __init__(self, rs, en, d4, d5, d6, d7, cols, lines, backlight=None):
@@ -107,8 +107,8 @@ class ScreenComponent(JNTComponent):
         self.pin_lcd_backlight = 4
         self.lcd_columns = 20
         self.lcd_rows    = 4
-        self.lcd = LCD.Adafruit_CharLCD(self.pin_lcd_rs, self.pin_lcd_en, self.pin_lcd_d4, self.pin_lcd_d5, self.pin_lcd_d6, self.pin_lcd_d7,
-                            self.pin_lcd_columns, self.pin_lcd_rows, self.pin_lcd_backlight)
+        self.lcd = Adafruit_CharLCD(self.pin_lcd_rs, self.pin_lcd_en, self.pin_lcd_d4, self.pin_lcd_d5, self.pin_lcd_d6, self.pin_lcd_d7,
+                            self.lcd_columns, self.lcd_rows, self.pin_lcd_backlight)
 
     def set_message(self, node_uuid, index, data):
         """Set the message on the screen
