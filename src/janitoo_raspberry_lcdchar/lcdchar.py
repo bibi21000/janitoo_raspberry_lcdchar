@@ -47,7 +47,10 @@ except RuntimeError:
     class LCD():
         """ Fake class to allow buil on Continuous Integration tools.
         """
-        pass
+        def __init__(self, rs, en, d4, d5, d6, d7, cols, lines, backlight=None):
+            """
+            """
+            pass
 
     logger.exception("Can't import Adafruit_CharLCD")
 
