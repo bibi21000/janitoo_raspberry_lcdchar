@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""The Raspberry bmp thread
+"""The Raspberry lcdchar thread
 
-Server files using the http protocol
+See https://github.com/adafruit/Adafruit_Python_CharLCD/blob/master/examples/char_lcd.py
 
 """
 
@@ -38,6 +38,8 @@ from janitoo.node import JNTNode
 from janitoo.value import JNTValue
 from janitoo.component import JNTComponent
 from janitoo_raspberry_i2c.bus_i2c import I2CBus
+
+import Adafruit_CharLCD as LCD
 
 #~ try:
     #~ from Adafruit_MotorHAT import Adafruit_StepperMotor, Adafruit_DCMotor
@@ -86,93 +88,36 @@ class ScreenComponent(JNTComponent):
         JNTComponent.__init__(self, oid=oid, bus=bus, addr=addr, name=name,
                 product_name=product_name, product_type=product_type, product_manufacturer=product_manufacturer, **kwargs)
         logger.debug("[%s] - __init__ node uuid:%s", self.__class__.__name__, self.uuid)
-        uuid="speed"
-        self.values[uuid] = self.value_factory['config_byte'](options=self.options, uuid=uuid,
+        uuid="message"
+        self.values[uuid] = self.value_factory['action_string'](options=self.options, uuid=uuid,
             node_uuid=self.uuid,
-            help='The speed of the motor. A byte from 0 to 255',
-            label='Speed',
-            default=0,
-            set_data_cb=self.set_speed,
-        )
-        uuid="max_speed"
-        self.values[uuid] = self.value_factory['config_byte'](options=self.options, uuid=uuid,
-            node_uuid=self.uuid,
-            help="The max speed supported by the motor. Some motor doesn't seems support 100% PWM. A byte from 0 to 255",
-            label='Speed',
-            default=255,
-        )
-        uuid="num"
-        self.values[uuid] = self.value_factory['config_byte'](options=self.options, uuid=uuid,
-            node_uuid=self.uuid,
-            help='The number of the motor on the Hat board. A byte from 1 to 4',
-            label='Num.',
-        )
-        uuid="actions"
-        self.values[uuid] = self.value_factory['action_list'](options=self.options, uuid=uuid,
-            node_uuid=self.uuid,
-            help='The action on the DC motor',
-            label='Actions',
-            list_items=['forward', 'backward', 'release'],
-            default='release',
-            set_data_cb=self.set_action,
+            help='A message to print on the screen',
+            label='Msg',
+            default='Janitoo started',
+            set_data_cb=self.set_message,
             is_writeonly = True,
             cmd_class=COMMAND_MOTOR,
             genre=0x01,
         )
-        uuid="current_speed"
-        self.values[uuid] = self.value_factory['sensor_integer'](options=self.options, uuid=uuid,
-            node_uuid=self.uuid,
-            help='The current speed of the motor. An integer from -255 to 255',
-            label='CSpeed',
-            get_data_cb=self.get_current_speed,
-        )
         poll_value = self.values[uuid].create_poll_value(default=300)
         self.values[poll_value.uuid] = poll_value
+        self.pin_lcd_rs        = 27  # Note this might need to be changed to 21 for older revision Pi's.
+        self.pin_lcd_en        = 22
+        self.pin_lcd_d4        = 25
+        self.pin_lcd_d5        = 24
+        self.pin_lcd_d6        = 23
+        self.pin_lcd_d7        = 18
+        self.pin_lcd_backlight = 4
+        self.lcd_columns = 20
+        self.lcd_rows    = 4
+        self.lcd = LCD.Adafruit_CharLCD(self.pin_lcd_rs, self.pin_lcd_en, self.pin_lcd_d4, self.pin_lcd_d5, self.pin_lcd_d6, self.pin_lcd_d7,
+                            self.pin_lcd_columns, self.pin_lcd_rows, self.pin_lcd_backlight)
 
-    def get_current_speed(self, node_uuid, index):
-        """Get the current speed
+    def set_message(self, node_uuid, index, data):
+        """Set the message on the screen
         """
-        current_state = self.values['actions'].get_data_index(index=index)
-        if current_state == 'forward':
-            return self.values['speed'].get_data_index(index=index)
-        elif current_state == 'backward':
-            return self.values['speed'].get_data_index(index=index) * -1
-        else:
-            return 0
-
-    def set_speed(self, node_uuid, index, data):
-        """Set the speed ot the motor
-        """
-        self.values['speed'].set_data_index(index=index, data=data)
         try:
-            m = self.values['num'].get_data_index(index=index)
-            if m is not None:
-                self._bus.pca9685.getMotor(m).setSpeed(data)
+            lcd.clear()
+            lcd.message(data)
         except:
-            logger.exception('Exception when setting speed')
-
-    def set_action(self, node_uuid, index, data):
-        """Act on the motor
-        """
-        params = {}
-        if data == "forward":
-            try:
-                m = self.values['num'].get_data_index(index=index)
-                if m is not None:
-                    self._bus.pca9685.getMotor(m).run(Adafruit_MotorHAT.FORWARD)
-            except:
-                logger.exception('Exception when running forward')
-        elif data == "backward":
-            try:
-                m = self.values['num'].get_data_index(index=index)
-                if m is not None:
-                    self._bus.pca9685.getMotor(m).run(Adafruit_MotorHAT.BACKWARD)
-            except:
-                logger.exception('Exception when running backward')
-        elif data == "release":
-            m = self.values['num'].get_data_index(index=index)
-            if m is not None:
-                try:
-                    self._bus.pca9685.getMotor(m).run(Adafruit_MotorHAT.RELEASE)
-                except:
-                    logger.exception('Exception when releasing one motor %s'%m)
+            logger.exception('Exception when displaying message')
