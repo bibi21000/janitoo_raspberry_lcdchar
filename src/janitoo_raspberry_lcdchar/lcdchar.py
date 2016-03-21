@@ -39,23 +39,17 @@ from janitoo.value import JNTValue
 from janitoo.component import JNTComponent
 from janitoo_raspberry_i2c.bus_i2c import I2CBus
 
-import Adafruit_CharLCD as LCD
 
-#~ try:
-    #~ from Adafruit_MotorHAT import Adafruit_StepperMotor, Adafruit_DCMotor
-#~ except IOError:
-#~
-    #~ class Adafruit_StepperMotor():
-        #~ """ Fake class to allow buil on Continuous Integration tools.
-        #~ """
-        #~ pass
-#~
-    #~ class Adafruit_DCMotor():
-        #~ """ Fake class to allow buil on Continuous Integration tools.
-        #~ """
-        #~ pass
-#~
-    #~ logger.exception("Can't import Adafruit_MotorHAT")
+try:
+    import Adafruit_CharLCD as LCD
+except RuntimeError:
+
+    class LCD():
+        """ Fake class to allow buil on Continuous Integration tools.
+        """
+        pass
+
+    logger.exception("Can't import Adafruit_CharLCD")
 
 ##############################################################
 #Check that we are in sync with the official command classes
