@@ -108,7 +108,7 @@ setup(
       'https://github.com/bibi21000/janitoo_raspberry/archive/master.zip#egg=janitoo_raspberry',
       'https://github.com/bibi21000/janitoo_raspberry_i2c/archive/master.zip#egg=janitoo_raspberry_i2c',
       'https://github.com/adafruit/Adafruit_Python_GPIO/archive/master.zip#egg=Adafruit-GPIO',
-      'https://github.com/adafruit/Adafruit_Python_CharLCD/archive/master.zip#egg=Adafruit_CharLCDAdafruit_CharLCD',
+      'https://github.com/adafruit/Adafruit_Python_CharLCD/archive/master.zip#egg=Adafruit_CharLCD',
     ],
     entry_points = janitoo_entry_points,
 )
