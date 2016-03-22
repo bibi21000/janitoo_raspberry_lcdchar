@@ -114,7 +114,7 @@ class ScreenComponent(JNTComponent):
         """Set the message on the screen
         """
         try:
-            lcd.clear()
-            lcd.message(data)
+            self.lcd.clear()
+            self.lcd.message(data)
         except:
             logger.exception('Exception when displaying message')
