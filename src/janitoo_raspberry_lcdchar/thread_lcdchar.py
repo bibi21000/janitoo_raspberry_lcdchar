@@ -54,8 +54,8 @@ COMMAND_CONTROLLER = 0x1050
 assert(COMMAND_DESC[COMMAND_CONTROLLER] == 'COMMAND_CONTROLLER')
 ##############################################################
 
-def make_lcdchar(options):
-    if get_option_autostart(options, 'rpilcdchar') == True:
+def make_lcdchar(options, force=False):
+    if get_option_autostart(options, 'rpilcdchar') == True or force:
         return LcdcharThread(options)
     else:
         return None
