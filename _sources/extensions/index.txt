@@ -1,0 +1,18 @@
+janitoo_raspberry_lcdchar package
+=================================
+
+Show janitoo's extensions.
+
+Core extensions
+---------------
+
+Threads
+^^^^^^^
+
+ - rpilcdchar (janitoo_raspberry_lcdchar.thread_lcdchar:make_lcdchar)
+
+Components
+^^^^^^^^^^
+
+ - rpilcdchar.screen (janitoo_raspberry_lcdchar.lcdchar:make_screen)
+

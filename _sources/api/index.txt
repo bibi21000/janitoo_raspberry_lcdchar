@@ -1,0 +1,38 @@
+janitoo_raspberry_lcdchar package
+=================================
+
+Submodules
+----------
+
+janitoo_raspberry_lcdchar.bus_lcdchar module
+--------------------------------------------
+
+.. automodule:: janitoo_raspberry_lcdchar.bus_lcdchar
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+janitoo_raspberry_lcdchar.lcdchar module
+----------------------------------------
+
+.. automodule:: janitoo_raspberry_lcdchar.lcdchar
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+janitoo_raspberry_lcdchar.thread_lcdchar module
+-----------------------------------------------
+
+.. automodule:: janitoo_raspberry_lcdchar.thread_lcdchar
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: janitoo_raspberry_lcdchar
+    :members:
+    :undoc-members:
+    :show-inheritance:
