@@ -55,7 +55,7 @@ assert(COMMAND_DESC[COMMAND_CONTROLLER] == 'COMMAND_CONTROLLER')
 ##############################################################
 
 def make_lcdchar(options, force=False):
-    if get_option_autostart(options, 'rpilcdchar') == True or force:
+    if get_option_autostart(options, 'rpilcdchar') or force:
         return LcdcharThread(options)
     else:
         return None
