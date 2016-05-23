@@ -115,5 +115,5 @@ class ScreenComponent(JNTComponent):
         try:
             self.lcd.clear()
             self.lcd.message(data)
-        except:
+        except Exception:
             logger.exception('Exception when displaying message')
